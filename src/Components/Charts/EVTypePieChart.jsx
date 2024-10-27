@@ -1,5 +1,5 @@
-import React, { useContext, useState, useMemo } from 'react'
-import { EvDataContext } from '../../Context/EVDataContext'
+import React, { useContext, useState, useMemo } from "react";
+import { EvDataContext } from "../../Context/EVDataContext";
 import { Pie, Doughnut } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -13,8 +13,16 @@ import {
   Legend,
   PolarAreaController,
 } from "chart.js/auto";
-import { FormControl, InputLabel, Select, MenuItem, Box, Paper } from "@mui/material";
-
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Box,
+  Paper,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 
 ChartJS.register(
   CategoryScale,
@@ -29,68 +37,70 @@ ChartJS.register(
 );
 
 const selectClass = {
-  width:"28%",
-  marginLeft: "70%"
-}
-
+  width: "28%",
+  marginLeft: "70%",
+};
 
 const EVTypePieChart = () => {
-    
-    const {evData,loading} = useContext(EvDataContext);
+  const { evData, loading } = useContext(EvDataContext);
 
-    const [selectedYear, setSelectedYear] = useState("");
+  const [selectedYear, setSelectedYear] = useState("");
 
-    
-
-    function getUniqueValues(arr) {
-      const uniqueArray = [];
-      for (let i = 0; i < arr.length; i++) {
-        if (!uniqueArray.includes(arr[i])) {
-          uniqueArray.push(arr[i]);
-        }
+  function getUniqueValues(arr) {
+    const uniqueArray = [];
+    for (let i = 0; i < arr.length; i++) {
+      if (!uniqueArray.includes(arr[i])) {
+        uniqueArray.push(arr[i]);
       }
-      return uniqueArray;
     }
+    return uniqueArray;
+  }
 
-    const years = getUniqueValues(evData.map((ev) => ev["Model Year"]).sort((a,b)=>b-a));
+  const years = getUniqueValues(
+    evData.map((ev) => ev["Model Year"]).sort((a, b) => b - a)
+  );
 
-    const filteredData = useMemo(() => {
-      return evData.filter((ev) => {
-        return (
-          (selectedYear ? ev["Model Year"] === selectedYear : true)
-        );
-      });
-    }, [evData, selectedYear]);
+  const filteredData = useMemo(() => {
+    return evData.filter((ev) => {
+      return selectedYear ? ev["Model Year"] === selectedYear : true;
+    });
+  }, [evData, selectedYear]);
 
+  const evTypes = filteredData.reduce((acc, ev) => {
+    acc[ev["Electric Vehicle Type"]] =
+      (acc[ev["Electric Vehicle Type"]] || 0) + 1;
+    return acc;
+  }, {});
 
-    const evTypes = filteredData.reduce((acc,ev)=>{
-        acc[ev['Electric Vehicle Type']] = (acc[ev['Electric Vehicle Type']] || 0) +1;
-        return acc;
-    },{});
-
-    const chartData = {
-      labels: Object.keys(evTypes),
-      datasets: [{
+  const chartData = {
+    labels: Object.keys(evTypes),
+    datasets: [
+      {
         data: Object.values(evTypes),
-        backgroundColor: ['#FFCE56', '#4BC0C0'],
-      }]    
-    }
+        backgroundColor: ["#FFCE56", "#4BC0C0"],
+      },
+    ],
+  };
 
-    if(loading){
-      return <div>Loading...</div>
-    }
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", marginLeft: "25%" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
   return (
     <>
-    <Box component={Paper} 
-    p={2}
-    elevation={3} 
-    sx={{borderRadius: '12px',}}
-    >
-    <FormControl
-          fullWidth
-          variant="outlined"
-          style={selectClass}
+      <Box component={Paper} p={2} elevation={3} sx={{ borderRadius: "12px" }}>
+        <Typography
+          variant="h5"
+          gutterBottom
+          mb={1}
+          style={{ fontWeight: "bold" }}
         >
+          Vechile Count
+        </Typography>
+        <FormControl fullWidth variant="outlined" style={selectClass}>
           <InputLabel id="year-select-label">Filter by Year</InputLabel>
           <Select
             labelId="year-select-label"
@@ -106,11 +116,10 @@ const EVTypePieChart = () => {
             ))}
           </Select>
         </FormControl>
-        <Doughnut data={chartData}/>
-    </Box>
-    
+        <Doughnut data={chartData} />
+      </Box>
     </>
-  )
-}
+  );
+};
 
-export default EVTypePieChart
+export default EVTypePieChart;

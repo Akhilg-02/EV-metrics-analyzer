@@ -13,7 +13,7 @@ import {
   Legend,
   PolarAreaController,
 } from "chart.js/auto";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper, Typography, CircularProgress } from "@mui/material";
 
 ChartJS.register(
   CategoryScale,
@@ -69,19 +69,33 @@ const ModelYearLineChart = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Box sx={{ display: "flex", marginLeft: "25%" }}>
+        <CircularProgress />
+      </Box>
+    );
   }
   return (
-    <Box 
-    component={Paper}
+    <Box
+      component={Paper}
       padding={3}
-    elevation={3}
-    style={{ width: '100%', height: '63vh'}}
-    sx={{
-      borderRadius: '12px',
-    }}
+      elevation={3}
+      style={{ width: "100%", height: "63vh" }}
+      sx={{
+        borderRadius: "12px",
+      }}
     >
-      <Line data={chartData} options={options} />
+      <Typography
+        variant="h5"
+        gutterBottom
+        mb={1}
+        style={{ fontWeight: "bold" }}
+      >
+        Registration Year
+      </Typography>
+      <Box style={{ width: "100%", height: "90%" }}>
+        <Line data={chartData} options={options} />
+      </Box>
     </Box>
   );
 };

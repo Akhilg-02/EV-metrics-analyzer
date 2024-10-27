@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { styled, useTheme} from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import {
   Box,
@@ -20,27 +20,14 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import AttractionsIcon from '@mui/icons-material/Attractions';
 import HeadComponent from "../HeadComponet";
-
-
-
-
-
-
-
-
-
-
-
-
 
 const drawerWidth = 200;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  backgroundColor:"black",//#0bc1cf
-  color:"white",
+  backgroundColor: "black", //#0bc1cf
+  color: "white",
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -54,11 +41,11 @@ const closedMixin = (theme) => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: "hidden",
-  color:"white",
+  color: "white",
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up("sm")]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
-    backgroundColor:"black",//#0bc1cf
+    backgroundColor: "black", //#0bc1cf
   },
 });
 
@@ -66,7 +53,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
-  color:"white",
+  color: "white",
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
@@ -76,8 +63,8 @@ const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  backgroundColor:'#0bc1cf',// "black",
-  color:"white",
+  backgroundColor: "black",
+  color: "white",
   transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -109,18 +96,17 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-
 const Dashboard = () => {
-    const theme = useTheme();
-    const [open, setOpen] = useState(false);
-  
-    const handleDrawerOpen = () => {
-      setOpen(true);
-    };
-  
-    const handleDrawerClose = () => {
-      setOpen(false);
-    };
+  const theme = useTheme();
+  const [open, setOpen] = useState(false);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -138,26 +124,42 @@ const Dashboard = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{color:"violet", display:"flex"}}>
-            <span>
-              <AttractionsIcon sx={{fontSize:"60px"}}/> 
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ color: "#FFCE56", display: "flex" }}
+          >
+            <span
+              style={{
+                margin: "15px",
+                fontSize: "1.4em",
+                fontFamily: "Lexend Deca, sans-serif",
+              }}
+            >
+              EV⚡Metrics
             </span>
-            <span style={{margin:"15px"}}>
-              Dashboard 
-            </span>
-            
           </Typography>
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-        <Typography variant="h6" noWrap component="div">
-            Dashboard
+          <Typography variant="h6" noWrap component="div">
+            <span
+              style={{
+                margin: "25px",
+                fontSize: ".8em",
+                fontFamily: "Lexend Deca, sans-serif",
+              }}
+            >
+              EV⚡Metrics
+            </span>
           </Typography>
-          <IconButton onClick={handleDrawerClose}
-          sx={{
-            color:"white"
-          }}
+          <IconButton
+            onClick={handleDrawerClose}
+            sx={{
+              color: "white",
+            }}
           >
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
@@ -168,8 +170,8 @@ const Dashboard = () => {
         </DrawerHeader>
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: "block", }}>
+          {["Home", "DataSets", "Models", "Code"].map((text, index) => (
+            <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{
                   minHeight: 48,
@@ -182,7 +184,7 @@ const Dashboard = () => {
                     minWidth: 0,
                     mr: open ? 3 : "auto",
                     justifyContent: "center",
-                    color:"white"
+                    color: "white",
                   }}
                 >
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -195,10 +197,10 @@ const Dashboard = () => {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <HeadComponent/>
+        <HeadComponent />
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

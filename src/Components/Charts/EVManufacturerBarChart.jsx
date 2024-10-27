@@ -13,7 +13,16 @@ import {
   Legend,
   PolarAreaController,
 } from "chart.js/auto";
-import { FormControl, InputLabel, Select, MenuItem, Box, Paper } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Box,
+  Paper,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 
 ChartJS.register(
   CategoryScale,
@@ -28,9 +37,9 @@ ChartJS.register(
 );
 
 const selectClass = {
-  width:"25%",
-  marginRight: "2%"
-}
+  width: "25%",
+  marginRight: "2%",
+};
 
 const EVManufacturerBarChart = () => {
   const { evData, loading } = useContext(EvDataContext);
@@ -50,7 +59,9 @@ const EVManufacturerBarChart = () => {
   }
 
   // Get unique years, makes, and models
-  const years = getUniqueValues(evData.map((ev) => ev["Model Year"]).sort((a,b)=>b-a));
+  const years = getUniqueValues(
+    evData.map((ev) => ev["Model Year"]).sort((a, b) => b - a)
+  );
   const makes = getUniqueValues(evData.map((ev) => ev["Make"]));
   const models = getUniqueValues(evData.map((ev) => ev["Model"]));
 
@@ -93,7 +104,9 @@ const EVManufacturerBarChart = () => {
       x: {
         title: {
           display: true,
-          text: selectedMake ? "Types of Manufacturing Model's" : "Types of Manufacturer",
+          text: selectedMake
+            ? "Types of Manufacturing Model's"
+            : "Types of Manufacturer",
           color: "black",
         },
       },
@@ -108,22 +121,31 @@ const EVManufacturerBarChart = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Box sx={{ display: "flex", marginLeft: "25%" }}>
+        <CircularProgress />
+      </Box>
+    );
   }
   return (
     <>
-      <Box component={Paper} 
-      p={2}
-      elevation={3} 
-      style={{height:"85.5vh"}} 
-      sx={{borderRadius: '12px',}}
-      
-    >
-        <FormControl
-          fullWidth
-          variant="outlined"
-          style={selectClass}
+      <Box
+        component={Paper}
+        p={2}
+        elevation={3}
+        style={{ height: "91vh" }}
+        sx={{ borderRadius: "12px" }}
+      >
+        <Typography
+          variant="h5"
+          gutterBottom
+          mb={3}
+          style={{ fontWeight: "bold" }}
         >
+          Manufacturing details
+        </Typography>
+
+        <FormControl fullWidth variant="outlined" style={selectClass}>
           <InputLabel id="year-select-label">Filter by Year</InputLabel>
           <Select
             labelId="year-select-label"
@@ -140,11 +162,7 @@ const EVManufacturerBarChart = () => {
           </Select>
         </FormControl>
 
-        <FormControl
-          fullWidth
-          variant="outlined"
-          style={selectClass}
-        >
+        <FormControl fullWidth variant="outlined" style={selectClass}>
           <InputLabel id="make-select-label">Filter by Make</InputLabel>
           <Select
             labelId="make-select-label"
@@ -191,12 +209,10 @@ const EVManufacturerBarChart = () => {
           </FormControl>
         )}
 
-        <Box style={{ width: '100%', height: '85%'}}>
-          <Bar data={chartData} options={options}/>
+        <Box style={{ width: "100%", height: "83%" }}>
+          <Bar data={chartData} options={options} />
         </Box>
-        
       </Box>
-      
     </>
   );
 };
